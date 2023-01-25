@@ -1,7 +1,7 @@
 # DataTable
 
 ## Deployment link
- [link](https://projectts.herokuapp.com/)
+ [link](https://63d1660c2fe5930961fc470a--profound-sopapillas-dd0769.netlify.app/)
 
 ## Author: Thaer Braizat 
 
