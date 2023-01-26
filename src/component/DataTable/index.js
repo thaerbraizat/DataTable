@@ -6,11 +6,17 @@ import Button from "@mui/material/Button";
 import { Circles } from "react-loader-spinner";
 import { Box } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
+import moment from "moment";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const columns = [
-  { field: "id", headerName: "Log ID", width: 150 },
+  { field: "id", headerName: "Log ID", width: 75 },
   { field: "logId", headerName: "log Id", width: 300 },
   { field: "Applicationtype", headerName: "Application type", width: 300 },
+  { field: "actionType", headerName: "action Type", width: 300 },
   { field: "applicationType", headerName: "application Type", width: 300 },
   { field: "Date", headerName: "Date", width: 200 },
 ];
@@ -28,12 +34,13 @@ export default function DataTable() {
       let AllData = await DataTableInfo.getDataTable();
       let newData = AllData.map((element, index) => {
         return {
-          id: index +1,
+          id: index + 1,
           logId: element.logId,
           Actiontype: element.actionType,
           ApplicationID: element.applicationId,
           applicationType: element.applicationType,
-          Date: element.creationTimestamp,
+          actionType: element.actionType,
+          Date: moment(element.creationTimestamp).format("YYYY/MM/DD"),
         };
       });
       setData(newData);
@@ -53,7 +60,7 @@ export default function DataTable() {
       }
       return true;
     });
-    
+
     setData(filterdData);
   };
 
@@ -99,22 +106,57 @@ export default function DataTable() {
               onChange={updateFilter}
               sx={{ mr: 2 }}
             />
-            <TextField
-              id="outlined-basic"
-              name="Actiontype"
-              label="Action type"
-              variant="outlined"
-              onChange={updateFilter}
-              sx={{ mr: 2 }}
-            />
-            <TextField
-              id="outlined-basic"
-              name="applicationType"
-              label="Application type"
-              variant="outlined"
-              onChange={updateFilter}
-              sx={{ mr: 2 }}
-            />
+            <FormControl sx={{ width: 222, mr: 2 }}>
+              <InputLabel id="demo-simple-select-label">Action type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={filter.Actiontype}
+                label="Action type"
+                name="Actiontype"
+                onChange={updateFilter}
+              >
+                <MenuItem value="DARI_REFRESH_TOKEN">
+                  DARI_REFRESH_TOKEN
+                </MenuItem>
+                <MenuItem value="INITIATE_APPLICATION">
+                  INITIATE_APPLICATION
+                </MenuItem>
+                <MenuItem value="DARI_APP_LOGIN">DARI_APP_LOGIN</MenuItem>
+                <MenuItem value="SUBMIT_APPLICATION">
+                  SUBMIT_APPLICATION
+                </MenuItem>
+                <MenuItem value="ADD_EMPLOYEE">ADD_EMPLOYEE</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: 222, mr: 2 }}>
+              <InputLabel id="demo-simple-select-label">
+                Application type
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={filter.applicationType}
+                label="Application type"
+                name="applicationType"
+                onChange={updateFilter}
+              >
+                <MenuItem value="CERT_TITLE_DEED_PLOT">
+                  CERT_TITLE_DEED_PLOT
+                </MenuItem>
+                <MenuItem value="ADD_POA">ADD_POA</MenuItem>
+                <MenuItem value="LEASE_REGISTRATION">
+                  LEASE_REGISTRATION
+                </MenuItem>
+                <MenuItem value="ADD_COMPANY">ADD_COMPANY</MenuItem>
+                <MenuItem value="ADD_COMPANY_EMPLOYEE">
+                  ADD_COMPANY_EMPLOYEE
+                </MenuItem>
+                <MenuItem value="CERT_PROP_OWNERSHIP">
+                  CERT_PROP_OWNERSHIP
+                </MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               id="outlined-basic"
               name="ApplicationID"
@@ -123,6 +165,15 @@ export default function DataTable() {
               onChange={updateFilter}
               sx={{ mr: 2 }}
             />
+            <TextField
+              id="outlined-basic"
+              name="Date"
+              label="Date"
+              variant="outlined"
+              onChange={updateFilter}
+              sx={{ mr: 2 }}
+            />
+
             <Button
               variant="contained"
               onClick={handleSubmitFilter}
@@ -146,7 +197,7 @@ export default function DataTable() {
               pageSize={10}
               rowsPerPageOptions={[10]}
             />
-            <div style={{ position: "absolute", bottom: 10,right:0 }}>
+            <div style={{ position: "absolute", bottom: 10, right: 0 }}>
               <Pagination
                 count={Math.ceil(data.length / dataPerPage)}
                 color="primary"
